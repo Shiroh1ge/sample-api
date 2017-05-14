@@ -7,8 +7,11 @@
         {{>header}}
     </nav>
 
-    <a href="#newGameModal" class="btn-floating btn-medium waves-effect waves-light red"><i class="material-icons">add</i></a>
+    <a href="#newGameModal" class="btn-floating btn-medium waves-effect waves-light red"><i
+            class="material-icons">add</i></a>
 
+
+    <br/>
     <div class="table">
         <table>
             <thead>
@@ -19,46 +22,46 @@
                 <th>Action</th>
             </tr>
             </thead>
-
+            {{#games}}
             <tbody>
             <tr>
-                <td>Call of Duty</td>
-                <td>FPS</td>
-                <td>Activision</td>
+                <td>{{title}}</td>
+                <td>{{category}}</td>
+                <td>{{publisher}}</td>
                 <td><i class="material-icons">delete_forever</i></td>
             </tr>
             </tbody>
+            {{/games}}
         </table>
-
     </div>
 </div>
 
 <div id="newGameModal" class="modal">
-    <form>
-    <div class="modal-content">
-        <h4>Add new game</h4>
-        <input type="text" placeholder="Title">
-        <div class="input-field col s12">
-            <select class="browser-default">
-                <option value="" disabled selected>Category</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
-            </select>
+    <form action="/browse/new-game" method="POST">
+        <div class="modal-content">
+            <h4>Add new game</h4>
+            <input type="text" name="title" placeholder="Title">
+            <div class="input-field col s12">
+                <select name="category" class="browser-default">
+                    <option disabled selected>Category</option>
+                    <option value="rpg">RPG</option>
+                    <option value="fps">FPS</option>
+                    <option value="rts">RTS</option>
+                </select>
+            </div>
+            <br>
+            <input name="publisher" type="text" placeholder="Publisher">
         </div>
-        <br>
-        <input type="text" placeholder="Publisher">
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Create</a>
-    </div>
+        <div class="modal-footer">
+            <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat">Create</button>
+        </div>
     </form>
 </div>
 
-{{>scripts}}
 
+{{>scripts}}
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('.modal').modal();
     });
 </script>

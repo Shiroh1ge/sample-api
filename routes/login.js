@@ -15,8 +15,6 @@ router.get('/', (req, res, next) => {
             scripts: 'scripts'
         },
     });
-
-    console.log(res.locals);
 });
 
 passport.use(new LocalStrategy((username, password, done) => {
