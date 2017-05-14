@@ -2,33 +2,30 @@
 <html lang="en">
 {{>head}}
 <body>
+
 <div class="main-container">
     <nav>
-        {{>header}}
+       {{> header}}
     </nav>
     <div class="row">
         <div>{{timestamp}}</div>
-        <p>{{variable}}</p>
         <div class="col s4">
-            <form method="POST" action="/signup">
+            <form method="POST" action="/login">
                 <div class="form-header">
-                    <h3>Register account</h3>
+                    <h3>Login to your account</h3>
                 </div>
                 <div class="form-content">
                     <input type="text" class="input" name="username" placeholder="Username"/>
-                    <input type="email" class="input" name="email" placeholder="Email"/>
                     <input type="password" class="input" name="password" placeholder="Password"/>
                     <input type="submit" class="btn" value="Submit"/>
                 </div>
             </form>
-
 
             <p>{{myVar}}</p>
             <p>{{req}}</p>
         </div>
     </div>
 </div>
-
 {{>scripts}}
 </body>
 </html>

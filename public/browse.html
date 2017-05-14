@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+{{>head}}
+<body>
+<div class="main-container">
+    <nav>
+        {{>header}}
+    </nav>
+
+    <a href="#newGameModal" class="btn-floating btn-medium waves-effect waves-light red"><i class="material-icons">add</i></a>
+
+    <div class="table">
+        <table>
+            <thead>
+            <tr>
+                <th>Game</th>
+                <th>Category</th>
+                <th>Publisher</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>Call of Duty</td>
+                <td>FPS</td>
+                <td>Activision</td>
+                <td><i class="material-icons">delete_forever</i></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div id="newGameModal" class="modal">
+    <form>
+    <div class="modal-content">
+        <h4>Add new game</h4>
+        <input type="text" placeholder="Title">
+        <div class="input-field col s12">
+            <select class="browser-default">
+                <option value="" disabled selected>Category</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+            </select>
+        </div>
+        <br>
+        <input type="text" placeholder="Publisher">
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Create</a>
+    </div>
+    </form>
+</div>
+
+{{>scripts}}
+
+<script>
+    $(document).ready(function(){
+        $('.modal').modal();
+    });
+</script>
+</body>
+</html>

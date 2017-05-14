@@ -21,9 +21,18 @@
   },
   "homepage": "https://github.com/Shiroh1ge/sample-app#readme",
   "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
+    "express-session": "^1.15.2",
+    "hogan-express": "^0.5.2",
     "hogan.js": "^3.0.2",
     "mongoose": "^4.9.8",
-    "passport": "^0.3.2"
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "uuid": "^3.0.1",
+    "when": "^3.7.8"
   }
 }
