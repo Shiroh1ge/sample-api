@@ -9,17 +9,23 @@
 
     let express = require('express');
     let app = express();
+    let port = process.env.PORT || 3000;
+    let server = require('http').createServer(app);
     let config = require('./config');
     let mongoose = require('mongoose');
-    let port = process.env.PORT || 3000;
     let path = require('path');
     let bodyParser = require('body-parser');
     let cookieParser = require('cookie-parser');
     let session = require('express-session');
     let passport = require('passport');
+    let io = require('socket.io').listen(server);
+
+    let socketModules = require('./socket')(io);
+    // let chat = require('./socket/chat')(io);
 
 
     app.use('/static', express.static(__dirname + '/public'));
+    app.use('/node', express.static(__dirname + '/node_modules'));
     app.use(cookieParser());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
@@ -51,7 +57,8 @@
             partials: {
                 header: 'header',
                 head: 'head',
-                scripts: 'scripts'
+                scripts: 'scripts',
+                chat: 'chat/chat'
             },
 
         });
@@ -70,8 +77,16 @@
         console.log('Successfully connected to database');
     });
 
-    app.listen(port, () => {
-        console.log('Example app listening on port 3000!')
+    server.listen(port, () => {
+        console.log('Example app listening on port: ',port)
     });
+
+    io.on('connection', function (socket) {
+        console.log('socket connected');
+        socket.on('news', function (data) {
+            console.log('news received');
+        });
+    });
+
 
 })(exports);

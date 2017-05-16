@@ -6,10 +6,9 @@ let router = express.Router();
 let GamesController = require('../controllers/games');
 
 router.post('/',[GamesController.createNewGame], (req,res,next) => {
-    console.log(req.body);
-    res.json({success : "Updated Successfully", status : 200});
+    res.json({success : "Updated Successfully", status : 200, data: res.body || null});
 });
 
-router.get('/', (req,res,next) => {
-});
+
+router.get('/', (req,res,next) => {});
 module.exports = router;

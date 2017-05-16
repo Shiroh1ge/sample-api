@@ -12,7 +12,8 @@ router.get('/', (req, res, next) => {
         partials: {
             head: 'head',
             header: 'header',
-            scripts: 'scripts'
+            scripts: 'scripts',
+            chat: 'chat/chat'
         },
     });
 });
@@ -62,7 +63,7 @@ router.post('/', (req, res, next) => {
 
         req.logIn(user, function(err) {
             if (err) { return next(err); }
-            return res.redirect('/');
+            return res.redirect('/browse');
         });
 
     })(req, res, next)

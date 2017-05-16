@@ -7,37 +7,45 @@
         {{>header}}
     </nav>
 
+    {{name}}
+
     <a href="#newGameModal" class="btn-floating btn-medium waves-effect waves-light red"><i
-            class="material-icons">add</i></a>
-
-
+            class="material-icons">add</i>
+    </a>
     <br/>
-    <div class="table">
-        <table>
+    <div>
+        <table class="table">
             <thead>
             <tr>
-                <th>Game</th>
+                <!--<th>ID</th>-->
+                <th class="title">Game</th>
                 <th>Category</th>
                 <th>Publisher</th>
                 <th>Action</th>
             </tr>
             </thead>
+            <tbody class="table-data-container">
             {{#games}}
-            <tbody>
             <tr>
+                <!--<td>{{index}}</td>-->
                 <td>{{title}}</td>
                 <td>{{category}}</td>
                 <td>{{publisher}}</td>
-                <td><i class="material-icons">delete_forever</i></td>
+                <td>
+                    <a href="#edit-game-modal"><i
+                            class="material-icons">edit</i>
+                    </a>
+                    <a href="#"><i class="material-icons delete-icon">delete_forever</i></a>
+                </td>
             </tr>
-            </tbody>
             {{/games}}
+            </tbody>
         </table>
     </div>
 </div>
 
 <div id="newGameModal" class="modal">
-    <form action="/browse/new-game" method="POST">
+    <form id="newGameForm">
         <div class="modal-content">
             <h4>Add new game</h4>
             <input type="text" name="title" placeholder="Title">
@@ -53,17 +61,104 @@
             <input name="publisher" type="text" placeholder="Publisher">
         </div>
         <div class="modal-footer">
-            <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat">Create</button>
+            <button id="submitFormButton" type="button"
+                    class="modal-action modal-close waves-effect waves-green btn-flat">Create
+            </button>
         </div>
     </form>
 </div>
 
+<div id="edit-game-modal" class="modal">
+    <form id="editForm">
+        <div class="modal-content">
+            <h4>Add new game</h4>
+            <input type="text" name="title" placeholder="Title">
+            <div class="input-field col s12">
+                <select name="category" class="browser-default">
+                    <option disabled selected>Category</option>
+                    <option value="rpg">RPG</option>
+                    <option value="fps">FPS</option>
+                    <option value="rts">RTS</option>
+                </select>
+            </div>
+            <br>
+            <input name="publisher" type="text" placeholder="Publisher">
+        </div>
+        <div class="modal-footer">
+            <button id="submitEditFormButton" type="button"
+                    class="modal-action modal-close waves-effect waves-green btn-flat">Create
+            </button>
+        </div>
+    </form>
+</div>
 
 {{>scripts}}
 <script>
+
     $(document).ready(function () {
         $('.modal').modal();
+        var table = $('.table');
+
+        $('#submitFormButton').click(() => {
+            $.ajax({
+                url: 'browse/new-game',
+                type: 'post',
+                dataType: 'json',
+                data: $('#newGameForm').serialize(),
+                success: function (data) {
+                    var game = $(`
+                   <tr>
+                       <td>${data.title} </td>
+                       <td>${data.category} </td>
+                       <td>${data.publisher} </td>
+                       <td>
+                    <a href="#edit-game-modal"><i
+                            class="material-icons">edit</i>
+                    </a>
+                    <a href="#"><i class="material-icons delete-icon">delete_forever</i></a>
+                       </td>
+                    </tr> `);
+                    $('.table-data-container').append(game);
+                }
+            });
+        });
+
+        table.on('click', '.delete-icon', function () {
+            let itemParent = $(this).parent().parent().parent()[0];
+            let item = $(this).parent().parent().siblings()[0];
+            let itemTitle = item.textContent;
+
+            $.ajax({
+                url: 'browse',
+                type: 'delete',
+                data: {
+                    title: itemTitle
+                },
+                success: function (game) {
+                    itemParent.remove();
+                }
+            })
+        });
+
+        table.on('click', 'edit-icon', function () {
+            $('#edit-game-modal').modal('open');
+        });
+
+        $('#submitEditFormButton').click(() => {
+            $.ajax({
+                url: 'browse',
+                type: 'put',
+                dataType: 'json',
+                data: $('#editForm').serialize(),
+                success: function (data) {
+                    console.log('data', data);
+                }
+            });
+        });
+
     });
+
+
 </script>
 </body>
 </html>

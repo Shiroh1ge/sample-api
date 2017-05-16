@@ -76,8 +76,8 @@
 
     };
 
-    UsersController.isAuthenticated = (req,res,next) => {
-        if(req.isAuthenticated()) {
+    UsersController.isAuthenticated = (req, res, next) => {
+        if (req.isAuthenticated()) {
             return next();
         } else {
             res.redirect('/login');
@@ -94,10 +94,14 @@
 
     UsersController.comparePassword = (password, hash, callback) => {
         bcrypt.compare(password, hash, (err, isMatch) => {
-            if(err) {
+            if (err) {
                 console.log(err);
             }
             callback(null, isMatch)
         })
+    };
+
+    UsersController.newMessage = (req, res, next) => {
+        console.log(req);
     }
 }(exports));

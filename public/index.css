@@ -1,6 +1,6 @@
 .main-container {
     padding: 0 60px;
 }
-#newGameModal {
+.modal {
     width: 500px;
 }
