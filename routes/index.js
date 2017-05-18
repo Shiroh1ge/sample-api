@@ -11,6 +11,9 @@ router.use('/login', loginRoutes);
 router.get('/logout', (req, res) => {
     req.logout();
     req.session.destroy(function (err) {
+        if(err) {
+            console.log(err);
+        }
         res.redirect('/');
         console.log('Successfully logged out');
     });

@@ -9,6 +9,5 @@ router.post('/',[GamesController.createNewGame], (req,res,next) => {
     res.json({success : "Updated Successfully", status : 200, data: res.body || null});
 });
 
-
 router.get('/', (req,res,next) => {});
 module.exports = router;

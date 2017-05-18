@@ -13,14 +13,17 @@ router.get('/', (req, res, next) => {
             head: 'head',
             header: 'header',
             scripts: 'scripts',
-            chat: 'chat/chat'
+            chat: 'chat/chat',
+            footer: 'footer'
         },
     });
 });
 
 passport.use(new LocalStrategy((username, password, done) => {
     UsersController.getUserByUsername(username, (err, user) => {
-        user = user.toObject();
+        if(user) {
+            user = user.toObject();
+        }
 
         if (err) {
             throw new Error('User does not exist')
@@ -36,7 +39,7 @@ passport.use(new LocalStrategy((username, password, done) => {
             if (isMatch) {
                 return done(null, user);
             } else {
-                return done(null, false);
+              console.log(err);
             }
         });
 

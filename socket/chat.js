@@ -11,14 +11,13 @@
 
 let UserController = require('../controllers/users');
 
-module.exports = function(io) {
+module.exports = function(app, io) {
     io.on('connection', (socket) => {
         socket.on('newMessage', (message) => {
-            console.log(message);
-            io.sockets.emit('newMessage', message)
+            io.sockets.emit('newMessage', Object.assign({}, app.locals.user._doc,{message:message}))
         })
     });
 
     io.sockets.on('newMessage', (message) => {
-    })
+    });
 };

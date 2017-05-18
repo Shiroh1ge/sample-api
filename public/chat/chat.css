@@ -30,7 +30,7 @@ body {
     width: 500px;
     height: 500px;
     overflow-y: scroll;
-    overflow-x:hidden;
+    overflow-x: hidden;
     transform: translateX(100%);
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
@@ -67,8 +67,8 @@ p {
     color: rgba(255, 255, 255, 0.7);
     word-wrap: break-word;
     font-size: 14px;
-    margin-top: 30px;
-    opacity: 0;
+    margin-top: 0px;
+    opacity: 1;
 }
 
 .bubble:after {
@@ -100,7 +100,9 @@ p {
     margin-bottom: 30px;
     color: #8b91a0;
     float: left;
-    opacity: 0;
+    opacity: 1;
+    font-size: 10px;
+    width: 100%;
 }
 
 .dt-alt {
@@ -119,7 +121,7 @@ p {
     background: rgba(105, 105, 105, 0.3);
     color: rgba(255, 255, 255, 0.3);
     padding: 0.7em;
-    color:white;
+    color: white;
 }
 
 .chat-input:focus {
@@ -130,14 +132,18 @@ p {
     background: #fff;
     padding: 0.5em;
     padding-bottom: .7em;
-    text-align: center;
+    text-align: left;
 }
 
 .chat-header span {
     font-size: 12px;
     position: absolute;
-    margin: 47px -50px;
+    margin: -23px 8px;
     font-style: italic;
+}
+
+.user-profile-container {
+    display: inline-block;
 }
 
 .user-profile {
@@ -153,6 +159,18 @@ p {
     cursor: pointer
 }
 
+
+#current-user-container {
+    display: inline-block;
+    width: 70px;
+    border-right: 1px grey solid;
+}
+
+#connected-users-container {
+    display: inline-block;
+    width: 375px;
+    margin-left: 25px;
+}
 .user-profile:nth-child(1) {
     background-image: url(http://vignette3.wikia.nocookie.net/fairytail/images/0/02/Mugshot_of_Erza.png/revision/latest?cb=20130509171537);
 }

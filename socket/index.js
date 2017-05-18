@@ -8,8 +8,8 @@ fs.readdirSync(__dirname).forEach(function (file) {
         var moduleName = file.split('.')[0];
         var uppercaseModuleName = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
 
-        module.exports = function(io) {
-            exports[uppercaseModuleName] = require('./' + moduleName)(io);
+        module.exports = function(app, io) {
+            exports[uppercaseModuleName] = require('./' + moduleName)(app, io);
         }
     }
 });

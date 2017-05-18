@@ -21,7 +21,9 @@ router.get('/', UsersController.isAuthenticated, (req, res, next) => {
             partials: {
                 head: 'head',
                 header: 'header',
-                scripts: 'scripts'
+                scripts: 'scripts',
+                chat: 'chat/chat',
+                footer: 'footer'
             },
             games: games
         });

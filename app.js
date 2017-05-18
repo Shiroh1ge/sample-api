@@ -20,9 +20,7 @@
     let passport = require('passport');
     let io = require('socket.io').listen(server);
 
-    let socketModules = require('./socket')(io);
-    // let chat = require('./socket/chat')(io);
-
+    let socketModules = require('./socket')(app, io);
 
     app.use('/static', express.static(__dirname + '/public'));
     app.use('/node', express.static(__dirname + '/node_modules'));
@@ -43,9 +41,10 @@
     app.set('view engine', 'html');
     app.use((req, res, next) => {
         app.locals.user = req.user || null;
-        if (req.user) {
-            // console.log('current user: ', app.locals.user);
-        }
+        // if (req.user) {
+        //     io.sockets.emit('newUserConnected', app.locals.user);
+        // }
+
         next();
     });
     app.use(require('./routes'));
@@ -53,12 +52,12 @@
     app.get('/', (req, res) => {
         res.render('index', {
             timestamp: new Date(),
-            myArray: [{username: "one", index: 1}, {username: "two", index: 2}, {index: 3}],
             partials: {
                 header: 'header',
                 head: 'head',
                 scripts: 'scripts',
-                chat: 'chat/chat'
+                chat: 'chat/chat',
+                footer: 'footer'
             },
 
         });
@@ -78,15 +77,24 @@
     });
 
     server.listen(port, () => {
-        console.log('Example app listening on port: ',port)
+        console.log('Example app listening on port: ', port)
     });
 
+    let users = [];
     io.on('connection', function (socket) {
+        if (app.locals.user) {
+            app.locals.user.socketId = socket.id;
+            let user = {};
+            users.push(Object.assign(user, app.locals.user._doc,{socketId: socket.id}));
+            io.sockets.emit('newUserConnected', users);
+        }
         console.log('socket connected');
-        socket.on('news', function (data) {
-            console.log('news received');
-        });
-    });
 
+        socket.on('disconnect', () => {
+            users = users.filter(user => user.socketId !== socket.id);
+            console.log(users);
+            io.sockets.emit('userDisconnected', users)
+        })
+    });
 
 })(exports);
