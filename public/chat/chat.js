@@ -47,15 +47,16 @@ $(document).ready(function () {
     function newMessage(messageData) {
         let message = messageData.message;
         let username = messageData.user.username;
-
         let parentContainer = $('.chat-container');
+
         let messageNode = $(`
             <div class="bubble bubble">
             <p style="font-size: 18px;font-weight: bold;">${username}</p>
-                <p>${message}</p>
+                <p class="message"></p>
             </div>
             <span class="datestamp">${new Date(new Date().getTime()).toLocaleString()}</span>
 `);
+        $('.message').text(message);
         parentContainer.append(messageNode);
     }
 
