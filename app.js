@@ -84,16 +84,17 @@
     io.on('connection', function (socket) {
         if (app.locals.user) {
             app.locals.user.socketId = socket.id;
-            let user = {};
-            users.push(Object.assign(user, app.locals.user._doc,{socketId: socket.id}));
-            io.sockets.emit('newUserConnected', users);
+            users.push(Object.assign({}, app.locals.user._doc,{socketId: socket.id}));
+            io.sockets.emit('getConnectedUsers', users);
+
+            socket.emit('newUserConnected', app.locals.user);
         }
         console.log('socket connected');
 
         socket.on('disconnect', () => {
             users = users.filter(user => user.socketId !== socket.id);
-            console.log(users);
-            io.sockets.emit('userDisconnected', users)
+            console.log('disconnected user', users);
+            io.sockets.emit('getConnectedUsers', users)
         })
     });
 

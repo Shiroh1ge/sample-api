@@ -13,11 +13,17 @@ let UserController = require('../controllers/users');
 
 module.exports = function(app, io) {
     io.on('connection', (socket) => {
-        socket.on('newMessage', (message) => {
-            io.sockets.emit('newMessage', Object.assign({}, app.locals.user._doc,{message:message}))
-        })
+        socket.on('newMessage', (messageData) => {
+            // io.sockets.emit('newMessage', Object.assign({}, app.locals.user._doc,{message:message}))
+            UserController.newMessage(messageData, ()=> {
+                io.sockets.emit('newMessage', messageData);
+            });
+
+        });
+
+        UserController.getMessages((messages)=> {
+            socket.emit('getMessages', messages);
+        });
     });
 
-    io.sockets.on('newMessage', (message) => {
-    });
 };

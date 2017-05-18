@@ -3,6 +3,7 @@
  */
 (function (UsersController) {
     let User = require('../models/user');
+    let Message = require('../models/message');
     let bcrypt = require('bcrypt');
     let uuid = require('uuid');
     let when = require('when');
@@ -72,10 +73,6 @@
         });
     };
 
-    UsersController.loginUser = (passport, req, res, next) => {
-
-    };
-
     UsersController.isAuthenticated = (req, res, next) => {
         if (req.isAuthenticated()) {
             return next();
@@ -101,7 +98,20 @@
         })
     };
 
-    UsersController.newMessage = (req, res, next) => {
-        console.log(req);
+    UsersController.newMessage = (messageData, callback) => {
+       let author = messageData.user.username;
+       let message = messageData.message;
+        let newMessage = new Message({
+            author: author,
+            message: message,
+        });
+        newMessage.save(() => callback());
+    };
+        
+    UsersController.getMessages = (callback) => {
+        Message.find().limit(10).sort('createdOn').exec((err, res) => {
+           return callback(res);
+        })
     }
+    
 }(exports));

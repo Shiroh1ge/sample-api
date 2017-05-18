@@ -4,24 +4,23 @@
 $(document).ready(function () {
     var socket = io('http://localhost:3000');
     let chatInput = $('#chat-input');
-    let currentUser = $('#currentUser').innerHTML;
+    let currentUser = {};
 
-    socket.on('newUserConnected', (users) => {
-        // users.push(Object.assign(user,{socketId: socket.id}));
+    socket.on('getConnectedUsers', (users) => {
         console.log('user connected', users);
-        loadConnectedUsers(users);
+        let currUsers = users.filter(user => user.username !== currentUser.username);
+        console.log('currUsers',currUsers);
+        loadConnectedUsers(currUsers);
     });
 
-    socket.on('userDisconnected', (socketId) => {
-        // console.log(socketId);
-        // users = users.filter(user => user.socketId == socketId);
-        //
-        //  console.log(users);
-        //  console.log('user disconnected', users);
-        //  let noDuplicatedUsers = users.filter(function (user, i, a) { return a.indexOf(user) === i; });
-        //  loadConnectedUsers(users);
+    socket.on('newUserConnected', (user) => {
+        currentUser = user;
+        console.log('currentUser', user);
     });
 
+    socket.on('getMessages', (messages) => {
+        loadMessages(messages);
+    });
     function loadConnectedUsers(users) {
         $("#connected-users-container").html(users.map(function (user) {
             return (`
@@ -33,9 +32,21 @@ $(document).ready(function () {
         }).join(""));
     }
 
+    function loadMessages(messages) {
+        $('.chat-container').html(messages.map(function (message) {
+            return (`
+            <div class="bubble bubble">
+            <p style="font-size: 18px;font-weight: bold;">${message.author}</p>
+                <p>${message.message}</p>
+            </div>
+            <span class="datestamp">${new Date(message.createdOn).toLocaleString()}</span>
+`);
+        }).join(""));
+        $(".chat-container").scrollTop($(".chat-container")[0].scrollHeight);
+    }
     function newMessage(messageData) {
         let message = messageData.message;
-        let username = messageData.username;
+        let username = messageData.user.username;
 
         let parentContainer = $('.chat-container');
         let messageNode = $(`
@@ -68,14 +79,16 @@ $(document).ready(function () {
 
     $(document).keypress(function (e) {
         if (e.which == 13) {
-            socket.emit('newMessage', chatInput.val());
+            socket.emit('newMessage', {user: currentUser,message: chatInput.val()});
             chatInput.val('');
+
         }
     });
 
     socket.on('newMessage', (messageData) => {
         console.log('message: ', messageData);
         newMessage(messageData);
+        $(".chat-container").scrollTop($(".chat-container")[0].scrollHeight);
     })
 
 });

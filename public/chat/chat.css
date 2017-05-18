@@ -63,11 +63,9 @@ p {
     background: linear-gradient(40deg, rgba(255, 255, 255, 0.2) 00%, rgba(255, 255, 255, 0.3) 100%);
     border-radius: 3px;
     box-shadow: 0 5px 30px rgba(255, 255, 255, 0.1);
-    margin-bottom: 10px;
     color: rgba(255, 255, 255, 0.7);
     word-wrap: break-word;
     font-size: 14px;
-    margin-top: 0px;
     opacity: 1;
 }
 
