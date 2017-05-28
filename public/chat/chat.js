@@ -5,11 +5,12 @@ $(document).ready(function () {
     var socket = io('http://localhost:3000');
     let chatInput = $('#chat-input');
     let currentUser = {};
+    let chatContainer = $('.chat-container');
 
     socket.on('getConnectedUsers', (users) => {
         console.log('user connected', users);
         let currUsers = users.filter(user => user.username !== currentUser.username);
-        console.log('currUsers',currUsers);
+        console.log('currUsers', currUsers);
         loadConnectedUsers(currUsers);
     });
 
@@ -33,17 +34,20 @@ $(document).ready(function () {
     }
 
     function loadMessages(messages) {
-        $('.chat-container').html(messages.map(function (message) {
-            return (`
+        if (chatContainer) {
+            chatContainer.html(messages.map(function (message) {
+                return (`
             <div class="bubble bubble">
             <p style="font-size: 18px;font-weight: bold;">${message.author}</p>
                 <p>${message.message}</p>
             </div>
             <span class="datestamp">${new Date(message.createdOn).toLocaleString()}</span>
 `);
-        }).join(""));
-        $(".chat-container").scrollTop($(".chat-container")[0].scrollHeight);
+            }).join(""));
+            chatContainer.scrollTop($(".chat-container")[0].scrollHeight);
+        }
     }
+
     function newMessage(messageData) {
         let message = messageData.message;
         let username = messageData.user.username;
@@ -52,11 +56,10 @@ $(document).ready(function () {
         let messageNode = $(`
             <div class="bubble bubble">
             <p style="font-size: 18px;font-weight: bold;">${username}</p>
-                <p class="message"></p>
+                <p class="message">${message}</p>
             </div>
             <span class="datestamp">${new Date(new Date().getTime()).toLocaleString()}</span>
 `);
-        $('.message').text(message);
         parentContainer.append(messageNode);
     }
 
@@ -80,7 +83,7 @@ $(document).ready(function () {
 
     $(document).keypress(function (e) {
         if (e.which == 13) {
-            socket.emit('newMessage', {user: currentUser,message: chatInput.val()});
+            socket.emit('newMessage', {user: currentUser, message: chatInput.val()});
             chatInput.val('');
 
         }
