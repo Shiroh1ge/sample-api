@@ -23,9 +23,9 @@
 
     let socketModules = require('./socket')(app, io);
 
-
     app.use('/static', express.static(__dirname + '/public'));
     app.use('/node', express.static(__dirname + '/node_modules'));
+    app.use(favicon(__dirname + '/public/assets/favicon.ico'));
     app.use(cookieParser());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
@@ -41,7 +41,6 @@
     app.engine('html', require('hogan-express'));
     app.set('views', __dirname + '/public');
     app.set('view engine', 'html');
-    app.use(favicon(__dirname + '/public/assets/favicon.ico'));
     app.use((req, res, next) => {
         app.locals.user = req.user || null;
         next();
