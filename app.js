@@ -19,8 +19,10 @@
     let session = require('express-session');
     let passport = require('passport');
     let io = require('socket.io').listen(server);
+    let favicon = require('serve-favicon');
 
     let socketModules = require('./socket')(app, io);
+
 
     app.use('/static', express.static(__dirname + '/public'));
     app.use('/node', express.static(__dirname + '/node_modules'));
@@ -39,12 +41,9 @@
     app.engine('html', require('hogan-express'));
     app.set('views', __dirname + '/public');
     app.set('view engine', 'html');
+    app.use(favicon(__dirname + '/public/assets/favicon.ico'));
     app.use((req, res, next) => {
         app.locals.user = req.user || null;
-        // if (req.user) {
-        //     io.sockets.emit('newUserConnected', app.locals.user);
-        // }
-
         next();
     });
     app.use(require('./routes'));
@@ -62,6 +61,9 @@
 
         });
     });
+
+
+
     app.post('/', (req, res) => {
         res.render('index', {
             myVar: req.body.email,
@@ -80,8 +82,9 @@
         console.log('Example app listening on port: ', port)
     });
 
-    let users = [];
     io.on('connection', function (socket) {
+        let users = [];
+
         if (app.locals.user) {
             app.locals.user.socketId = socket.id;
             users.push(Object.assign({}, app.locals.user._doc,{socketId: socket.id}));
