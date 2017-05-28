@@ -2,7 +2,7 @@
  * Created by Bo on 16-May-17.
  */
 $(document).ready(function () {
-    var socket = io('http://localhost:3000');
+    let socket = io('shiroh1ge.herokuapp.com');
     let chatInput = $('#chat-input');
     let currentUser = {};
     let chatContainer = $('.chat-container');
@@ -34,7 +34,6 @@ $(document).ready(function () {
     }
 
     function loadMessages(messages) {
-        if (chatContainer) {
             chatContainer.html(messages.map(function (message) {
                 return (`
             <div class="bubble bubble">
@@ -44,7 +43,9 @@ $(document).ready(function () {
             <span class="datestamp">${new Date(message.createdOn).toLocaleString()}</span>
 `);
             }).join(""));
-            chatContainer.scrollTop($(".chat-container")[0].scrollHeight);
+
+        if (chatContainer) {
+            chatContainer.scrollTop(chatContainer[0].scrollHeight);
         }
     }
 
@@ -91,8 +92,8 @@ $(document).ready(function () {
 
     socket.on('newMessage', (messageData) => {
         console.log('message: ', messageData);
-        newMessage(messageData);
-        $(".chat-container").scrollTop($(".chat-container")[0].scrollHeight);
+
+            chatContainer.scrollTop(chatContainer[0].scrollHeight);
     })
 
 });
